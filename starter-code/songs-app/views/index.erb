@@ -1,0 +1,10 @@
+<ul>
+<% @songs.each do | song | %>
+  <li>
+    <p><strong>"<%= song.title %>", 
+    by <%= song.artist %></strong>, 
+    <%= song.genre %>,
+    <%= song.release_date %></p>
+  </li>
+<% end %>
+</ul>

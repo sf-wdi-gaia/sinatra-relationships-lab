@@ -13,7 +13,8 @@ __2. Create a Gemfile in the root directory. We've used these:__
 
 ``` ruby
 source "https://rubygems.org"
-gem "sinatra"
+
+gem "sinatra" # change rails to sinatra
 gem "sinatra-activerecord"
 gem "rake"
 gem "activerecord"
@@ -79,7 +80,7 @@ touch models/song.rb
 
 Note the `models` folder is optional in Sinatra, but we required this path in our `config.ru`
 
-__8. Open the `song.ru` file and create your class__
+__8. Open the `song.rb` file and create your class__
 
 ``` ruby
 class Song < ActiveRecord::Base
@@ -169,10 +170,10 @@ rake db:migrate
 
 This will update the `schema.rb` file as well as the database itself.
 
-__16. OPTIONAL. Make another migration__
+__16. Let's make another migration just for FUN!__
 
 ```bash
-rake db:creat_migration NAME=add_release_date_to_songs
+rake db:create_migration NAME=add_release_date_to_songs
 ```
 
 This creates a new migration file.
@@ -273,7 +274,7 @@ Add this to `app.rb`...
 get '/songs/:id' do
   @songs = Song.all
   @songs = Song.find(params[:id])
-  @song.titls
+  @song.title
 end
 
 ```
@@ -349,7 +350,7 @@ touch views/show.erb
 ```
 <%= @song.title %>
 <%= @song.artist %>
-<%= @songs.release_date %>
+<%= @song.release_date %>
 
 
 <form action="/songs/<%= @song.id %>" method="post" class='delete'>
@@ -363,7 +364,13 @@ touch views/show.erb
 
 
 ```ruby
-delete '/songs/:id' do
+
+ get '/songs/show/:id' do
+      @song = Song.find(params[:id])
+      erb :show
+  end
+
+post '/songs/:id' do
   @song = Song.find(params[:id])
   @song.destroy
   redirect("/songs")
