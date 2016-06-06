@@ -57,26 +57,35 @@ class CreateCovers < ActiveRecord::Migration
   end
 end
 
+```
+
+```
+rake db:migrate
 
 ```
 
-This will generate the model by itself along with the migration containing all the fields and the data types if you wrote them in the console.
+This will create the model and update the schema.
 
-Your challenge should you choose to accept it is to write `has_many` and `belongs_to` associations for each model and test them in `tux`.
+Next you need to write write `has_many` or `belongs_to` associations for each model and perform another migration to associate the models properly.
+
+  * Define the relationships in your models (the blueprint for your objects)
+    * Don't forget to define all sides of the relationship (e.g. `has_many` and `belongs_to`)
+  * Remember to put the foreign key for a relationship in your migration
+    * If you're not sure which side of the relationship has the foreign key, just use this simple rule: the model with `belongs_to` must include a foreign key.
 
 
-### Tux Console
+### Test in Tux Console
 
-If the relationship is modeled correctly, you should be able to do the following without throwing an error:
+If the relationship is modeled correctly, you should be able to run the following test in `tux` without throwing an error:
 
 ```ruby
 # create new song
 s = Song.create({title: "I Will Survive", artist: "Gloria Gaynor", genre: "Disco", release_date: "1978"})
 
 # create new cover
-c = Cover.create({title: "I Will Survive", artist: "Cake", genre: "Alternative Rock", release_date: "1996"})
+c = Cover.create({title: "I Will Survive", artist: "Cake", genre: "Alternative Rock", release_date: "1996", song_id: 5})
 
-# NOTE:  c needs a song_id!
+# NOTE: make sure the song_id is the same as the one in your db
 
 # list song's covers
 s.covers
@@ -87,15 +96,13 @@ c.song
 ```
 
 **Once you've finished creating the models:**
-  1. Create five covers
-  2. Create two songs
-  3. Assign three covers to the song with id = 1 and two covers to the song with id = 2
-  4. For one song, iterate through each of its covers and print the item details to the console.
-  4. Map each item in your database to its name.
-
-## Stretch Challenge
-
-Select only the covers of a song that are after a specific release_date.
+1. Create five covers
+2. Create two songs
+3. Assign three covers to the song with id = 4 and two covers to the song with id = 5
+4. For one song, iterate through each of its covers and print the item details to the console.
+5. Map each item in your database to its name.
+6. Render the covers relative to their original songs in an erb file.
+7. Select only the covers of a song that are after a specific release_date.
 
 **Hint:** Take a look at the ActiveRecord Docs for <a href="http://guides.rubyonrails.org/active_record_querying.html#conditions" target="_blank">`.where` conditions</a>. You'll need to write a SQL query in the `.where` method.
 
@@ -105,27 +112,15 @@ Start with something like this:
 some_song.cover.where() # your code to check "release_date < ..." goes inside the ()
 ```
 
-
-**Important: SQL Injection**
-
-You'll notice the Ruby Guide linked above has a warning about "SQL injection." With SQL injection attacks, users can trick your site into running SQL commands on your database. To protect against these attacks, Rails gives us a syntax for queries that uses `?`s instead of the regular string interpolation `#{}`. The `?` syntax plugs values into our SQL command strings, but it FIRST checks that the values don't contain SQL code. If you're done with this challenge set early, check out the hilarious (but scary) section on SQL injection in the ["Security" Rails Guide](http://guides.rubyonrails.org/security.html#sql-injection), and of course this well-known comic on the problem from XKCD:
-
-![xkcd exploits of a mom](http://imgs.xkcd.com/comics/exploits_of_a_mom.png)
-
-
-
 #### Stretch:
-If you are ready for a bigger challenge, start at the beginning of the sinatra-from-scratch tutorial and create a two-model app with a many-to-many relationship. If you stick with the songs-app idea, you may choose to put songs and artists in separate tables.
+If you are ready for a bigger challenge, create a two-model app with a many-to-many relationship. If you stick with the songs-app idea, you may choose to put songs and artists in separate tables.
 
 
-## Helpful Hints
 
-When you're **creating associations** in Sinatra ActiveRecord (or almost any ORM, for that matter):
+## Useful Docs
 
-  * Define the relationships in your models (the blueprint for your objects)
-    * Don't forget to define all sides of the relationship (e.g. `has_many` and `belongs_to`)
-  * Remember to put the foreign key for a relationship in your migration
-    * If you're not sure which side of the relationship has the foreign key, just use this simple rule: the model with `belongs_to` must include a foreign key.
+* <a href="http://guides.rubyonrails.org/association_basics.html" target="_blank">Associations Rails Guide</a>
+* <a href="http://edgeguides.rubyonrails.org/active_record_migrations.html" target="_blank">Migrations Rails Guide</a>
 
 ## Less Common Associations
 
@@ -134,9 +129,3 @@ These are for your references and are not used nearly as often as `has_many` and
   * <a href="http://guides.rubyonrails.org/association_basics.html#the-has-one-association" target="_blank">has_one</a>
   * <a href="http://guides.rubyonrails.org/association_basics.html#the-has-one-through-association" target="_blank">has_one through</a>
   * <a href="http://guides.rubyonrails.org/association_basics.html#has-and-belongs-to-many-association-reference" target="_blank">has_and_belongs_to_many</a>
-
-## Useful Docs
-
-* <a href="http://guides.rubyonrails.org/association_basics.html" target="_blank">Associations Rails Guide</a>
-* <a href="http://edgeguides.rubyonrails.org/active_record_migrations.html" target="_blank">Migrations Rails Guide</a>
-
