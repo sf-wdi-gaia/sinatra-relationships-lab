@@ -31,7 +31,6 @@ Release Date | Re-release Date
 What might a join table look like?
 
 
-
 ## Deliverable 
 
 Create models and migrations for `covers` and set up the proper relationship to associate data between them and their original `songs `. You can create these models in your `songs-app` Sinatra app. 
@@ -53,7 +52,6 @@ class CreateCovers < ActiveRecord::Migration
       t.string :artist 
       t.string :genre
       t.string :release_date
-
       t.timestamps
     end
   end
@@ -64,28 +62,28 @@ end
 
 This will generate the model by itself along with the migration containing all the fields and the data types if you wrote them in the console.
 
+Your challenge should you choose to accept it is to write `has_many` and `belongs_to` associations for each model and test them in `tux`.
+
+
 ### Tux Console
 
-If the relationship is modeled correctly, you'll be able to test your models in tux:
-
-```
-tux
-```
-
-You should be able to do the following without throwing an error:
+If the relationship is modeled correctly, you should be able to do the following without throwing an error:
 
 ```ruby
-# create new cover
-c = Cover.create
-
-# list cover's songs
-c.songs
-
 # create new song
-s = Song.create(title: "I Will Survive", artist: "Gloria Gaynor", genre: "Disco", release_date: "1978")
+s = Song.create({title: "I Will Survive", artist: "Gloria Gaynor", genre: "Disco", release_date: "1978"})
 
-# return song's cover
-s.cover
+# create new cover
+c = Cover.create({title: "I Will Survive", artist: "Cake", genre: "Alternative Rock", release_date: "1996"})
+
+# NOTE:  c needs a song_id!
+
+# list song's covers
+s.covers
+
+# return cover's song
+c.song
+
 ```
 
 **Once you've finished creating the models:**
