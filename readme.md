@@ -66,7 +66,7 @@ rake db:migrate
 
 This will create the model and update the schema.
 
-Next you need to write write `has_many` or `belongs_to` associations for each model and perform another migration to associate the models properly.
+Next you need to write write `has_many` or `belongs_to` associations for each model and perform another migration to associate the models properly. Make sure to require your new model in `config.ru` as well.
 
   * Define the relationships in your models (the blueprint for your objects)
     * Don't forget to define all sides of the relationship (e.g. `has_many` and `belongs_to`)
